@@ -20,11 +20,11 @@ public abstract class Piece
         this.uneCase = nouvelleCase;
     }
 
-    public abstract String symbole();
-
-    public String toString()
+    public void supprimerCase()
     {
-        return null;
+        this.uneCase = null;
     }
+
+    public abstract String toString();
 
 }

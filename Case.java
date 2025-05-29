@@ -37,10 +37,19 @@ public class Case
         this.piece = nouvellePiece;
     }
 
+    public void supprimerPiece()
+    {
+        this.piece.supprimerCase();
+        this.piece = null;
+    }
+
     public String toString()
     {
         if(this.piece == null)
-            return ".";
+            if (this.couleur.equals("blanc"))
+                return " ■ ";
+            else
+                return " □ ";
         return this.piece.toString();
     }
     

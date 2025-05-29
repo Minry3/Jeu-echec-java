@@ -10,11 +10,11 @@ public class Dame extends Piece
         return null;
     }
 
-    public String symbole()
+    public String toString()
     {
         if(this.getCouleur().equals("blanc"))
-            return "♕";
-        return "♛";
+            return " ♛ " ;
+        return " ♕ ";
     }
 
 }
