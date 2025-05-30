@@ -29,13 +29,13 @@ public class Echiquier
 
     public Case getCase(String etiquette, int numero)
     {
-        int e = this.indiceEtiquette(etiquette);
-        int n = this.indiceNumero(numero);
+        int e = Echiquier.indiceEtiquette(etiquette);
+        int n = Echiquier.indiceNumero(numero);
         Case laCase = this.lesCases[n][e];
         return laCase;
     }
 
-    public int indiceEtiquette(String etiquette)
+    public static int indiceEtiquette(String etiquette)
     {
 		int i = 0 ;
 		while (!etiquette.equals(Echiquier.ETIQUETTES[i]))
@@ -43,7 +43,7 @@ public class Echiquier
 		return i ;
     }
 
-    public int indiceNumero(int numero)
+    public static int indiceNumero(int numero)
     {
 		int i = 0 ;
 		while (numero != Echiquier.NUMEROS[i])
@@ -94,7 +94,7 @@ public class Echiquier
         for(int i=0; i<longueur; i++)
         {
             String etiquette = Echiquier.ETIQUETTES[i];
-            int indice = this.indiceEtiquette(etiquette);
+            int indice = Echiquier.indiceEtiquette(etiquette);
 
             Piece pieceBlanche;
             Piece pieceNoire;

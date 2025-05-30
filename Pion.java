@@ -5,9 +5,9 @@ public class Pion extends Piece
         super(couleur);
     }
 
-    public Case deplacement(Case destination)
+    public boolean deplacement(Case destination)
     {
-        return null;
+        return false;
     }
 
     public String toString()

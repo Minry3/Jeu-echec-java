@@ -8,11 +8,16 @@ public abstract class Piece
         this.couleur = uneCouleur;
     }
 
-    public abstract Case deplacement(Case destination);
+    public abstract boolean deplacement(Case destination);
 
     public String getCouleur()
     {
         return this.couleur;
+    }
+
+    public Case getCase()
+    {
+        return this.uneCase;
     }
 
     public void setCase(Case nouvelleCase)
