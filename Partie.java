@@ -126,4 +126,27 @@ public class Partie {
         this.ajouterCoupJoue(leCoup);
     }
 
+    public String toString()
+    {
+        String chaine = "";
+
+        chaine +=   "Joueur 1 (blanc) :"    +   this.joueur_1.getNom()      +   "\n"    +
+                    "Joueur 2 (noir)  :"    +   this.joueur_2.getNom()      +   "\n\n"  +
+                    "Trait :"                                                           ;
+        if(this.trait == 1)
+            chaine += "Joueur 1\n\n";
+        else
+            chaine += "Joueur 2\n\n";
+
+        chaine +=   "Liste des coups  :"    +   this.coupsJoues.toString()  +   "\n\n"  +
+                    "Pièces mangées   :"    +   "["                                     ;
+                    
+        for(int i=0; i<this.piecesMangees.size(); i++)
+        {
+            chaine += piecesMangees.get(i).toString();
+        }
+        chaine += "]\n\nEtat de la partie:\n\n" + this.echiquier.toString();
+
+        return chaine;
+    }
 }
