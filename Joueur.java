@@ -20,9 +20,5 @@ public class Joueur {
     public void setNom(String unNom){
         this.nom = unNom;
     }
-
-    public void setCouleur(String uneCouleur){
-        this.couleur = uneCouleur;
-    }
-
+    
 }
