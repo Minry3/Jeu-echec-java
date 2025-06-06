@@ -9,10 +9,12 @@ public class Partie {
     private int trait;
     private Echiquier echiquier;
 
-    public Partie(){
+    public Partie(Joueur leJoueur1, Joueur leJoueur2){
 
         this.coupsJoues = new ArrayList<String[]>();
         this.piecesMangees = new ArrayList<Piece>();
+        this.joueur_1 = leJoueur1;
+        this.joueur_2 = leJoueur2;
     }
 
     public ArrayList<String[]> getCoupsJoues(){
@@ -52,9 +54,33 @@ public class Partie {
 
     }
 
-    public boolean verifCoup(String[] leCoup){
+    public boolean verifCoup(String[] leCoup)
+    {
+        String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
+        String etiquetteA = leCoup[1].substring(0, 1).toUpperCase();
+        int numeroD = (int)leCoup[0].charAt(1);
+        int numeroA = (int)leCoup[1].charAt(1);
 
-        return false;
+        Case caseDepart = this.echiquier.getCase(etiquetteD, numeroD);
+        Case caseArrivee = this.echiquier.getCase(etiquetteA, numeroA);
+
+        if(caseDepart == null || caseArrivee == null)
+            return false;
+        if(caseDepart.getPiece() == null)
+            return false;
+        if(this.trait == 1 && !caseDepart.getPiece().getCouleur().equals(this.joueur_1.getCouleur()))
+                return false;
+        if(!caseDepart.getPiece().getCouleur().equals(joueur_2.getCouleur()))
+            return false;
+        
+        Piece laPiece = caseDepart.getPiece();
+
+        if(caseArrivee.getPiece() == null || !caseArrivee.getPiece().getCouleur().equals(laPiece.getCouleur()))
+            return false;
+
+        return true;
+        
+        
     }
 
     public void ajouterCoupJoue(String[] leCoup){
