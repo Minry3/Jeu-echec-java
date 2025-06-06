@@ -11,14 +11,24 @@ public class Pion extends Piece
         int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
         int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
         int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+
         boolean deplacementSansCapture = false;
         boolean deplacementCapture = false;
-        if(this.getCouleur().equals("blanc")){
-            deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) == 1);
+
+        if(this.getCouleur().equals("blanc"))
+        {
+            if(this.getCase().getNumero() == 2)
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) <=2);
+            else
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) == 1);
             deplacementCapture = ((ligneArrivee - ligneDepart) == 1) && (Math.abs(colonneDepart - colonneArrivee) == 1);
         }
-        else{
-            deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) == 1);
+        else
+        {
+            if(this.getCase().getNumero() == 2)
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) <= 2);
+            else
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) == 1);
             deplacementCapture = ((ligneDepart - ligneArrivee) == 1) && (Math.abs(colonneDepart - colonneArrivee) == 1);
         }
         

@@ -13,6 +13,7 @@ public class Roi extends Piece
         int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
         int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
         int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        
         return (Math.abs(ligneDepart - ligneArrivee) <= 1) && (Math.abs(colonneDepart - colonneArrivee) <= 1);
     }
 

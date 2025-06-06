@@ -11,6 +11,7 @@ public class Fou extends Piece
         int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
         int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
         int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        
         return (Math.abs(ligneDepart - ligneArrivee) == Math.abs(colonneDepart - colonneArrivee));
     }
 

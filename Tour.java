@@ -11,6 +11,7 @@ public class Tour extends Piece
         int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
         int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
         int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        
         return (ligneDepart == ligneArrivee || colonneDepart == colonneArrivee);
     }
 
