@@ -54,6 +54,14 @@ public class Partie {
 
     }
 
+    public boolean verifChemin(Case depart, Case destination)
+    {
+        Piece laPiece = depart.getPiece();
+        if(laPiece instanceof Roi || laPiece instanceof Cavalier)
+            return true;
+        return false;
+    }
+
     public boolean verifCoup(String[] leCoup)
     {
         String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
