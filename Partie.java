@@ -86,9 +86,11 @@ public class Partie {
         if(caseArrivee.getPiece() == null || !caseArrivee.getPiece().getCouleur().equals(laPiece.getCouleur()))
             return false;
 
+        if(!this.verifChemin(caseArrivee, caseDepart))
+            return false;
+
+        //verifier si roi est en position d'etre capture apres deplacement
         return true;
-        
-        
     }
 
     public void ajouterCoupJoue(String[] leCoup){
@@ -106,13 +108,22 @@ public class Partie {
     }
 
     public void jouerCoup(String[] leCoup){
-        this.echiquier.getCase(leCoup[1].charAt(0), Integer.parseInt(leCoup[1].charAt(0)));
+        String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
+        String etiquetteA = leCoup[1].substring(0, 1).toUpperCase();
+        int numeroD = (int)leCoup[0].charAt(1);
+        int numeroA = (int)leCoup[1].charAt(1);
 
+        Case caseDepart = this.echiquier.getCase(etiquetteD, numeroD);
+        Case caseArrivee = this.echiquier.getCase(etiquetteA, numeroA);
 
+        if(caseArrivee.getPiece() != null)
+        {
+            this.ajouterPieceMangee(caseArrivee.getPiece());
+            caseArrivee.supprimerPiece();
+        }
+        caseArrivee.setPiece(caseDepart.getPiece());
+        caseDepart.supprimerPiece();
+        this.ajouterCoupJoue(leCoup);
     }
-
-
-
-
 
 }
