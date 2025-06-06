@@ -17,7 +17,7 @@ public class Tour extends Piece
     public String toString()
     {
         if(this.getCouleur().equals("blanc"))
-            return " ♜ ";
-        return " ♖ ";
+            return " t ";
+        return " T ";
     }
 }

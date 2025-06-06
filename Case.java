@@ -46,10 +46,7 @@ public class Case
     public String toString()
     {
         if(this.piece == null)
-            if (this.couleur.equals("blanc"))
-                return " ■ ";
-            else
-                return " □ ";
+            return " . ";
         return this.piece.toString();
     }
     

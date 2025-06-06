@@ -57,14 +57,20 @@ public class Echiquier
         String chaine = "";
         for(int i=0; i<longueur; i++)
         {
-            chaine += Echiquier.NUMEROS[i] + "   ";
+            chaine += Echiquier.NUMEROS[i] + " | ";
             for(int j=0; j<longueur; j++)
             {
                 chaine += this.lesCases[i][j].toString();
             }
             chaine += "\n";
         }
-        chaine += "    ";
+        chaine += "   ";
+        for (int i=0; i<longueur; i++)
+        {
+            chaine += "---";
+        }
+
+        chaine += "\n    ";
         for (int i=0; i<longueur; i++)
         {
             chaine += " " + Echiquier.ETIQUETTES[i] + " ";
@@ -77,19 +83,17 @@ public class Echiquier
         int longueur = this.lesCases.length;
         for(int i=0; i<longueur; i++)
         {
-            Piece lePion = new Pion(Echiquier.COULEURS[1]);
-            Case laCase = this.getCase(Echiquier.ETIQUETTES[i], 7);
-            laCase.setPiece(lePion);
-            lePion.setCase(laCase);
+            Piece lePionNoir = new Pion(Echiquier.COULEURS[1]);
+            Case laCase1 = this.getCase(Echiquier.ETIQUETTES[i], 7);
+            laCase1.setPiece(lePionNoir);
+            lePionNoir.setCase(laCase1);
+
+            Piece lePionBlanc = new Pion(Echiquier.COULEURS[0]);
+            Case laCase2 = this.getCase(Echiquier.ETIQUETTES[i], 2);
+            laCase2.setPiece(lePionBlanc);
+            lePionBlanc.setCase(laCase2);
         }
-        
-        for(int i=0; i<longueur; i++)
-        {
-            Piece lePion = new Pion(Echiquier.COULEURS[0]);
-            Case laCase = this.getCase(Echiquier.ETIQUETTES[i], 2);
-            laCase.setPiece(lePion);
-            lePion.setCase(laCase);
-        }
+
 
         for(int i=0; i<longueur; i++)
         {

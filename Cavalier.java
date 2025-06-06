@@ -13,8 +13,8 @@ public class Cavalier extends Piece
     public String toString()
     {
         if(this.getCouleur().equals("blanc"))
-            return " ♞ ";
-        return " ♘ ";
+            return " c ";
+        return " C ";
     }
 
 }
