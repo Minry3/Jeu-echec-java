@@ -89,6 +89,7 @@ public class Case
      */
     public String toString()
     {
+        // si la case n'a pas de piece
         if(this.piece == null)
             return " . ";
         return this.piece.toString();
