@@ -13,8 +13,11 @@ public class Partie {
 
         this.coupsJoues = new ArrayList<String[]>();
         this.piecesMangees = new ArrayList<Piece>();
+        this.echiquier = new Echiquier();
+        this.echiquier.init();
         this.joueur_1 = leJoueur1;
         this.joueur_2 = leJoueur2;
+        this.trait = 1;
     }
 
     public ArrayList<String[]> getCoupsJoues(){
@@ -66,8 +69,8 @@ public class Partie {
     {
         String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
         String etiquetteA = leCoup[1].substring(0, 1).toUpperCase();
-        int numeroD = (int)leCoup[0].charAt(1);
-        int numeroA = (int)leCoup[1].charAt(1);
+        int numeroD = Character.getNumericValue(leCoup[0].charAt(1));
+        int numeroA = Character.getNumericValue(leCoup[1].charAt(1));
 
         Case caseDepart = this.echiquier.getCase(etiquetteD, numeroD);
         Case caseArrivee = this.echiquier.getCase(etiquetteA, numeroA);
@@ -110,8 +113,8 @@ public class Partie {
     public void jouerCoup(String[] leCoup){
         String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
         String etiquetteA = leCoup[1].substring(0, 1).toUpperCase();
-        int numeroD = (int)leCoup[0].charAt(1);
-        int numeroA = (int)leCoup[1].charAt(1);
+        int numeroD = Character.getNumericValue(leCoup[0].charAt(1));
+        int numeroA = Character.getNumericValue(leCoup[1].charAt(1));
 
         Case caseDepart = this.echiquier.getCase(etiquetteD, numeroD);
         Case caseArrivee = this.echiquier.getCase(etiquetteA, numeroA);
@@ -121,30 +124,43 @@ public class Partie {
             this.ajouterPieceMangee(caseArrivee.getPiece());
             caseArrivee.supprimerPiece();
         }
-        caseArrivee.setPiece(caseDepart.getPiece());
+        Piece piece = caseDepart.getPiece();
         caseDepart.supprimerPiece();
+        caseArrivee.setPiece(piece); 
+        piece.setCase(caseArrivee);
         this.ajouterCoupJoue(leCoup);
+        if(this.trait == 1)
+            this.trait = 2;
+        else
+            this.trait = 1;
     }
 
     public String toString()
     {
         String chaine = "";
 
-        chaine +=   "Joueur 1 (blanc) :"    +   this.joueur_1.getNom()      +   "\n"    +
-                    "Joueur 2 (noir)  :"    +   this.joueur_2.getNom()      +   "\n\n"  +
-                    "Trait :"                                                           ;
+        chaine +=   "Joueur 1 (blanc) : "    +   this.joueur_1.getNom()      +   "\n"    +
+                    "Joueur 2 (noir)  : "    +   this.joueur_2.getNom()      +   "\n\n"  +
+                    "Trait : "                                                           ;
         if(this.trait == 1)
-            chaine += "Joueur 1\n\n";
+            chaine += this.joueur_1.getNom() + "\n\n";
         else
-            chaine += "Joueur 2\n\n";
+            chaine += this.joueur_2.getNom() + "\n\n";
 
-        chaine +=   "Liste des coups  :"    +   this.coupsJoues.toString()  +   "\n\n"  +
-                    "Pièces mangées   :"    +   "["                                     ;
+        chaine +=   "Liste des coups  : [";
+
+        for(int i=0; i<this.coupsJoues.size(); i++)
+        {
+            chaine += "(" + coupsJoues.get(i)[0] + ", " + coupsJoues.get(i)[1] + ")";
+        }
+        
+        chaine += "]\nPièces mangées   : [";
                     
         for(int i=0; i<this.piecesMangees.size(); i++)
         {
             chaine += piecesMangees.get(i).toString();
         }
+
         chaine += "]\n\nEtat de la partie:\n\n" + this.echiquier.toString();
 
         return chaine;
