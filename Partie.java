@@ -41,13 +41,12 @@ public class Partie {
         String[] t = new String[2];
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Veuillez saisir votre case actuelle");
-        System.out.println();
+        System.out.println("Veuillez saisir la case de votre pièce : ");
 
         t[0] = sc.nextLine();
         System.out.println();
 
-        System.out.println("Veuillez proposer un coup");
+        System.out.println("Veuillez proposer un coup : ");
         System.out.println();
 
         t[1] = sc.nextLine();
@@ -77,16 +76,22 @@ public class Partie {
 
         if(caseDepart == null || caseArrivee == null)
             return false;
+
         if(caseDepart.getPiece() == null)
             return false;
+
         if(this.trait == 1 && !caseDepart.getPiece().getCouleur().equals(this.joueur_1.getCouleur()))
                 return false;
+                
         if(!caseDepart.getPiece().getCouleur().equals(joueur_2.getCouleur()))
             return false;
         
         Piece laPiece = caseDepart.getPiece();
 
         if(caseArrivee.getPiece() == null || !caseArrivee.getPiece().getCouleur().equals(laPiece.getCouleur()))
+            return false;
+
+        if(!laPiece.deplacement(caseArrivee))
             return false;
 
         if(!this.verifChemin(caseArrivee, caseDepart))
@@ -135,19 +140,35 @@ public class Partie {
             this.trait = 1;
     }
 
+    public boolean pat(Joueur joueur)
+    {
+        return false;
+    }
+
+    public boolean mat(Joueur joueur)
+    {
+        return false;
+    }
+
+    public int finDePartie()
+    {
+        return 0;
+    }
+
     public String toString()
     {
-        String chaine = "";
+        String chaine = "-----------------------------\n\n";
 
-        chaine +=   "Joueur 1 (blanc) : "    +   this.joueur_1.getNom()      +   "\n"    +
-                    "Joueur 2 (noir)  : "    +   this.joueur_2.getNom()      +   "\n\n"  +
-                    "Trait : "                                                           ;
+        chaine +=   "Joueur 1 (blanc) : "       +   this.joueur_1.getNom()  ;
         if(this.trait == 1)
-            chaine += this.joueur_1.getNom() + "\n\n";
-        else
-            chaine += this.joueur_2.getNom() + "\n\n";
+            chaine += "     | ";
+        
+        chaine +=   "\nJoueur 2 (noir)  : "     +   this.joueur_2.getNom()  ;
+        if(this.trait == 2)
+            chaine += "     | ";
 
-        chaine +=   "Liste des coups  : [";
+        chaine +=   "\n\nEtat de la partie:\n\n" + this.echiquier.toString() +
+                    "\n\nListe des coups  : ["   ;
 
         for(int i=0; i<this.coupsJoues.size(); i++)
         {
@@ -160,8 +181,7 @@ public class Partie {
         {
             chaine += piecesMangees.get(i).toString();
         }
-
-        chaine += "]\n\nEtat de la partie:\n\n" + this.echiquier.toString();
+        chaine += "]\n\n-----------------------------";
 
         return chaine;
     }
