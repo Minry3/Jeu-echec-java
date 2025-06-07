@@ -1,6 +1,5 @@
 /**
  *  gestion d'une Case
- *  @version 1.0
  *  @author Noemie CHHUN
  */
 public class Case 
