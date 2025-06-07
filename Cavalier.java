@@ -31,6 +31,7 @@ public class Cavalier extends Piece
         return  ((Math.abs(ligneDepart - ligneArrivee) == 1) && (Math.abs(colonneDepart - colonneArrivee) == 2)) || 
                 ((Math.abs(ligneDepart - ligneArrivee) == 2) && (Math.abs(colonneDepart - colonneArrivee) == 1));
     }
+    // fin methode deplacement
 
     /**
      * retourne la chaine de caractere representant le cavalier selon sa couleur
@@ -41,5 +42,6 @@ public class Cavalier extends Piece
             return " c ";
         return " C ";
     }
+    // fin methode toString
 
 }
