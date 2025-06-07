@@ -111,9 +111,6 @@ public class Partie {
         this.piecesMangees.add(laPiece);
     }
 
-    public void afficheCoupJoues(){
-        System.out.println(this.getCoupsJoues().toString());
-    }
 
     public void jouerCoup(String[] leCoup){
         String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
