@@ -1,11 +1,11 @@
 /**
- *  gestion d'une Case
+ *  gestion d'une Dame
  *  @author Clarence EDOH-DAGNON
  */
 public class Dame extends Piece {
 
-     /**
-     * constructeur champ à champ
+    /**
+     * constructeur champ a champ
      * @param couleur
      */
     public Dame(String couleur)
@@ -34,9 +34,8 @@ public class Dame extends Piece {
     }
     // fin methode deplacement
 
-
     /**
-     * retourne la chaine de caractere representant la dame selon sa couleur
+     * @return la chaine de caracteres representant la dame selon sa couleur
      */
     public String toString(){
 
@@ -47,3 +46,4 @@ public class Dame extends Piece {
     // fin methode toString
 
 }
+// fin classe Dame

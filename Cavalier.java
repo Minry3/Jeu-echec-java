@@ -1,12 +1,12 @@
 /**
- *  gestion d'une Case
+ *  gestion d'un Cavalier
  *  @author Clarence EDOH-DAGNON
  */
 public class Cavalier extends Piece
 {
 
     /**
-     * constructeur champ à champ
+     * constructeur champ a champ
      * @param couleur
      */
     public Cavalier(String couleur)
@@ -34,7 +34,7 @@ public class Cavalier extends Piece
     // fin methode deplacement
 
     /**
-     * retourne la chaine de caractere representant le cavalier selon sa couleur
+     * @return la chaine de caracteres representant le cavalier selon sa couleur
      */
     public String toString()
     {
@@ -45,3 +45,4 @@ public class Cavalier extends Piece
     // fin methode toString
 
 }
+// fin classe Cavalier

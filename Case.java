@@ -22,7 +22,6 @@ public class Case
         this.couleur = uneCouleur;
     }
 
-
     /**
      * Getter sur etiquette
      * @return l'etiquette de la case
@@ -95,3 +94,4 @@ public class Case
     }
     // fin methode toString
 }
+// fin classe Case

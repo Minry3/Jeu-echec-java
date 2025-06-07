@@ -1,5 +1,10 @@
 import java.util.*;
 
+/**
+ * gestion de TestJeu
+ * classe permettant de simuler et de tester une partie de jeu d'echec
+ * @author Noemie CHHUN
+ */
 public class TestJeu{
     public static void main(String[] args)
     {
@@ -133,9 +138,10 @@ public class TestJeu{
                 else if(finPartie == 2)
                     System.out.println(joueur_2.getNom() + " a gagné la partie !");
                 else
-                    System.out.println("partie nulle");
+                    System.out.println("Partie nulle");
             }
         }
         sc.close(); //fermeture du scanner
     }
 }
+// fin classe TestJeu
