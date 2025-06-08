@@ -50,18 +50,54 @@ public class Partie {
         System.out.println();
 
         t[1] = sc.nextLine();
-        sc.close();
         
         return t;
 
     }
 
-    public boolean verifChemin(Case depart, Case destination)
-    {
-        Piece laPiece = depart.getPiece();
-        if(laPiece instanceof Roi || laPiece instanceof Cavalier)
+    public boolean verifChemin(Case depart, Case destination){
+        // On récupère la pièce à déplacer
+        Piece laPiece = depart.getPiece();  
+
+        // Si c’est un roi ou un cavalier, pas besoin de vérifier le chemin
+        if (laPiece instanceof Roi || laPiece instanceof Cavalier)
             return true;
-        return false;
+
+        // On récupère les indices de colonnes 
+        int colDep = Echiquier.indiceEtiquette(depart.getEtiquette());
+        int colArr = Echiquier.indiceEtiquette(destination.getEtiquette());
+
+        // On récupère les indices de lignes
+        int ligDep = Echiquier.indiceNumero(depart.getNumero());
+        int ligArr = Echiquier.indiceNumero(destination.getNumero());
+
+        // On détermine la direction du mouvement :
+
+        // dCol = -1, 0 ou 1 → déplacement vers la gauche, aucun, ou la droite
+        // dLig = -1, 0 ou 1 → déplacement vers le haut, aucun, ou le bas
+        int dCol = Integer.compare(colArr, colDep);
+        int dLig = Integer.compare(ligArr, ligDep);
+
+        // On commence à la case juste après la case de départ
+        int col = colDep + dCol;
+        int lig = ligDep + dLig;
+
+        // On avance jusqu’à la case juste avant la destination
+        while (col != colArr || lig != ligArr) {
+            // On récupère la case intermédiaire
+            Case inter = this.echiquier.getCase(Echiquier.ETIQUETTES[col], Echiquier.NUMEROS[lig]);
+
+            // S’il y a une pièce sur cette case, le chemin est bloqué → retour faux
+            if (inter.getPiece() != null)
+                return false;
+
+            // On continue dans la même direction
+            col += dCol;
+            lig += dLig;
+        }
+
+        // Si toutes les cases intermédiaires sont vides, alors chemin libre
+        return true;
     }
 
     public boolean verifCoup(String[] leCoup)
@@ -74,30 +110,29 @@ public class Partie {
         Case caseDepart = this.echiquier.getCase(etiquetteD, numeroD);
         Case caseArrivee = this.echiquier.getCase(etiquetteA, numeroA);
 
-        if(caseDepart == null || caseArrivee == null)
+        if (caseDepart == null || caseArrivee == null)
             return false;
 
-        if(caseDepart.getPiece() == null)
+        if (caseDepart.getPiece() == null)
             return false;
 
-        if(this.trait == 1 && !caseDepart.getPiece().getCouleur().equals(this.joueur_1.getCouleur()))
-                return false;
-                
-        if(!caseDepart.getPiece().getCouleur().equals(joueur_2.getCouleur()))
+        String couleurJoueurActuel = (this.trait == 1) ? this.joueur_1.getCouleur() : this.joueur_2.getCouleur();
+        if (!caseDepart.getPiece().getCouleur().equals(couleurJoueurActuel))
             return false;
-        
+
         Piece laPiece = caseDepart.getPiece();
 
-        if(caseArrivee.getPiece() == null || !caseArrivee.getPiece().getCouleur().equals(laPiece.getCouleur()))
+        // Interdit d'aller sur une case avec une pièce de la même couleur
+        if (caseArrivee.getPiece() != null && caseArrivee.getPiece().getCouleur().equals(laPiece.getCouleur()))
             return false;
 
-        if(!laPiece.deplacement(caseArrivee))
+        if (!laPiece.deplacement(caseArrivee))
             return false;
 
-        if(!this.verifChemin(caseArrivee, caseDepart))
+        if (!this.verifChemin(caseDepart, caseArrivee))
             return false;
 
-        //verifier si roi est en position d'etre capture apres deplacement
+        // à ce stade, le coup est potentiellement valide
         return true;
     }
 
@@ -137,19 +172,28 @@ public class Partie {
             this.trait = 1;
     }
 
-    public boolean pat(Joueur joueur)
-    {
-        return false;
-    }
-
-    public boolean mat(Joueur joueur)
-    {
-        return false;
-    }
+  
 
     public int finDePartie()
-    {
-        return 0;
+    {   
+        Joueur joueur;
+        int numAdversaire;
+
+        if(this.trait == 1){
+            joueur = this.getJoueur1();
+            numAdversaire = 2;            
+        }
+        else {
+            joueur = this.getJoueur2();
+            numAdversaire = 1;            
+        }
+
+        if(this.echiquier.pat(joueur.getCouleur()))
+            return 0;
+        else if(this.echiquier.mat(joueur.getCouleur()))
+            return numAdversaire;
+        else 
+            return -1;
     }
 
     public String toString()
@@ -158,11 +202,11 @@ public class Partie {
 
         chaine +=   "Joueur 1 (blanc) : "       +   this.joueur_1.getNom()  ;
         if(this.trait == 1)
-            chaine += "     | ";
+            chaine += " (a le trait)";
         
         chaine +=   "\nJoueur 2 (noir)  : "     +   this.joueur_2.getNom()  ;
         if(this.trait == 2)
-            chaine += "     | ";
+            chaine += " (a le trait)";
 
         chaine +=   "\n\nEtat de la partie:\n\n" + this.echiquier.toString() +
                     "\n\nListe des coups  : ["   ;
