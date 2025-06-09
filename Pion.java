@@ -34,22 +34,22 @@ public class Pion extends Piece
         {
             // pour un deplacement sans capture
             if(this.getCase().getNumero() == 2) // si le pion est sur sa case de depart
-                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) <=2); // peut faire un deplacement jusqu'a 2 cases
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) <=2 && destination.getPiece() == null); // peut faire un deplacement jusqu'a 2 cases
             else
-                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) == 1);
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneArrivee - ligneDepart ) == -1 && destination.getPiece() == null);
             // pour un deplacement avec capture
-            deplacementCapture = ((ligneArrivee - ligneDepart) == 1) && (Math.abs(colonneDepart - colonneArrivee) == 1);
+            deplacementCapture = ((ligneArrivee - ligneDepart) == -1) && (Math.abs(colonneDepart - colonneArrivee) == 1 && destination.getPiece() != null);
         }
         // pour les pions noirs
         else
         {
             // pour un deplacement sans capture
             if(this.getCase().getNumero() == 7) // si le pion est sur sa case de depart
-                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) <= 2);
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) <= 2 && destination.getPiece() == null);
             else
-                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) == 1);
+                deplacementSansCapture = (colonneDepart == colonneArrivee) && ((ligneDepart - ligneArrivee ) == -1 && destination.getPiece() == null);
             // pour un deplacement avec capture
-            deplacementCapture = ((ligneDepart - ligneArrivee) == 1) && (Math.abs(colonneDepart - colonneArrivee) == 1);
+            deplacementCapture = ((ligneDepart - ligneArrivee) == -1) && (Math.abs(colonneDepart - colonneArrivee) == 1 && destination.getPiece() != null);
         }
         
         return deplacementCapture || deplacementSansCapture;

@@ -112,31 +112,49 @@ public class TestJeu{
 
                 while(partie.finDePartie() == -1)
                 {
-                    //saisie du coup
-                    String[] leCoup = partie.saisirCoup();
-                    System.out.println();
-
-                    //tant que le coup n'est pas faisable
-                    while(!partie.verifCoup(leCoup))
+                    try
                     {
-                        System.out.println("Le coup saisi n'est pas valide.");
+                        //saisie du coup
+                        String[] leCoup = partie.saisirCoup();
                         System.out.println();
-                        leCoup = partie.saisirCoup();
+
+                        //tant que le coup n'est pas faisable
+                        while(!partie.verifCoup(leCoup))
+                        {
+                            System.out.println("Le coup saisi n'est pas valide.");
+                            System.out.println();
+                            leCoup = partie.saisirCoup();
+                        }
+                    
+                        partie.jouerCoup(leCoup);
+                        System.out.println("Coup saisi !\n");
+
+                        //affichage de l'etat de la partie (echiquier, coups joues...)
+                        System.out.println(partie.toString());
+
+                        //affiche si le joueur avec le trait est en echec
+                        String couleurTrait = partie.joueurAvecTrait().getCouleur();
+                        if(couleurTrait.equals("blanc") && partie.estEnEchec(couleurTrait))
+                            System.out.println(joueur_1.getNom() + "est en échec !\n");
+                        else if(couleurTrait.equals("noir") && partie.estEnEchec(couleurTrait))
+                            System.out.println(joueur_2.getNom() + "est en échec !\n");
                     }
-
-                    partie.jouerCoup(leCoup);
-                    System.out.println("Coup saisi !\n");
-
-                    //affichage de l'etat de la partie (echiquier, coups joues...)
-                    System.out.println(partie.toString());
+                    catch(ChaineVideException e)
+                    {
+                        System.out.println("Attention !\nEntrez au moins un caractère.\n");
+                    }
+                    catch(MauvaiseLongueurException e)
+                    {
+                        System.out.println("Attention !\nEntrez un coup de la forme 'A1-B2'.\n");
+                    }
                 }
 
                 //affichage du resultat de la partie
                 int finPartie = partie.finDePartie();
                 if(finPartie == 1)
-                    System.out.println(joueur_1.getNom() + " a gagné la partie !");
+                    System.out.println("Echec et mat ! " + joueur_1.getNom() + " a gagné la partie !");
                 else if(finPartie == 2)
-                    System.out.println(joueur_2.getNom() + " a gagné la partie !");
+                    System.out.println("Echec et mat ! " + joueur_2.getNom() + " a gagné la partie !");
                 else
                     System.out.println("Partie nulle");
             }

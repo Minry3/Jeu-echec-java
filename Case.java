@@ -77,8 +77,11 @@ public class Case
      */
     public void supprimerPiece()
     {
-        this.piece.supprimerCase();
-        this.piece = null;
+        if(this.piece != null)
+        {
+            this.piece.supprimerCase();
+            this.piece = null;
+        }
     }
     // fin methode supprimerPiece
 

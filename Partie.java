@@ -37,7 +37,15 @@ public class Partie {
         return this.joueur_2;
     }
 
-    public String[] saisirCoup(){
+    public Joueur joueurAvecTrait() {
+        if (this.trait == 1) {
+            return this.joueur_1;
+        } else {
+            return this.joueur_2;
+        }
+    }
+
+    public String[] saisirCoup() throws ChaineVideException, MauvaiseLongueurException {
         String[] t = new String[2];
         Scanner sc = new Scanner(System.in);
 
@@ -51,47 +59,53 @@ public class Partie {
 
         t[1] = sc.nextLine();
 
+        if(t[0].isEmpty() || t[1].isEmpty()) 
+        {
+            throw new ChaineVideException("La chaine ne peut pas être vide.");
+        }
+
+        if(t[0].length() != 2 || t[1].length() != 2) 
+        {
+            throw new MauvaiseLongueurException("La longueur de la chaine doit être de 2 caractères.");
+        }
         return t;
     }
 
     public boolean estEnEchec(String couleur) {
         // Etape 1 : trouver le roi de la couleur donnée
         Case caseRoi = null;
+        Case[][] lesCases = this.echiquier.getLesCases();
 
         int i = 0;
         boolean trouve = false;
-        while(i<this.echiquier.getLesCases().length && !trouve)
+        while(i<lesCases.length && !trouve)
         {
             int j = 0;
-            while(j<this.echiquier.getLesCases()[i].length && !trouve)
+            while(j<lesCases[i].length && !trouve)
             {
-                Piece piece = this.echiquier.getLesCases()[i][j].getPiece();
+                Piece piece = lesCases[i][j].getPiece();
                 if(piece != null && piece instanceof Roi && piece.getCouleur().equals(couleur))
                 {
-                    caseRoi = this.echiquier.getLesCases()[i][j];
+                    caseRoi = lesCases[i][j];
                     trouve = true;
                 }
                 j++;
             }
             i++;
         }
-        
-        // s'il n'y a pas de case roi trouvee
-        if(!trouve)
-            return false;
 
         // Etape 2 : vérifier si une pièce adverse peut attaquer cette case
         boolean enEchec = false;
         i = 0;
 
-        while (i < this.echiquier.getLesCases().length && !enEchec) {
+        while (i < lesCases.length && !enEchec) {
             int j = 0;
-            while (j < this.echiquier.getLesCases()[i].length && !enEchec) {
-                Piece attaquant = this.echiquier.getLesCases()[i][j].getPiece();
+            while (j < lesCases[i].length && !enEchec) {
+                Piece attaquant = lesCases[i][j].getPiece();
                 // s'il y a une piece sur la case et que la couleur est celle de l'adversaire
                 if (attaquant != null && !attaquant.getCouleur().equals(couleur)) {
                     // si le deplacement est faisable
-                    if (attaquant.deplacement(caseRoi) && verifChemin(this.echiquier.getLesCases()[i][j], caseRoi)) {
+                    if (attaquant.deplacement(caseRoi) && verifChemin(lesCases[i][j], caseRoi)) {
                         enEchec = true; // Le roi est attaqué
                     }
                 }
@@ -169,7 +183,7 @@ public class Partie {
         // si la piece de la case de depart n'est pas de la meme couleur que celle du joueur ayant le trait
         if(this.trait == 1 && !caseDepart.getPiece().getCouleur().equals(this.joueur_1.getCouleur()))
             return false;
-        else if(this.trait == 2 && !caseDepart.getPiece().getCouleur().equals(this.joueur_2.getCouleur()))
+        if(this.trait == 2 && !caseDepart.getPiece().getCouleur().equals(this.joueur_2.getCouleur()))
             return false;
 
         Piece laPiece = caseDepart.getPiece();
@@ -206,7 +220,11 @@ public class Partie {
         caseArrivee.setPiece(pieceMangee);
         
         // si le roi est en echec return false, sinon le coup est valide donc true
-        return !roiEnEchec;
+        if (roiEnEchec) {
+            return false;
+        }
+        // Si toutes les vérifications sont passées, le coup est valide
+        return true;
     }
 
     public void ajouterCoupJoue(String[] leCoup){
@@ -358,10 +376,6 @@ public class Partie {
         // Aucun coup légal trouvé et pas en échec,donc égalité 
         return true;
     }
-
-
-
-
 
     public int finDePartie()
     {   
