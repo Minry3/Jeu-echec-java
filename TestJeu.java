@@ -110,7 +110,7 @@ public class TestJeu{
                 //affichage de l'etat de la partie (echiquier, coups joues...)
                 System.out.println(partie.toString());
                 //afichage du temps mis par les joueurs
-                System.out.println("Temps toal " + joueur_1.getNom() + " : " + joueur_1.getHorloge().toString());
+                System.out.println("Temps total " + joueur_1.getNom() + " : " + joueur_1.getHorloge().toString());
                 System.out.println("Temps mis par " + joueur_2.getNom() + " : " + joueur_2.getHorloge().toString());
 
                 //tant que la partie n'est pas finie
@@ -132,17 +132,20 @@ public class TestJeu{
                             System.out.println();
                             leCoup = partie.saisirCoup();
                         }
-                    
-                        partie.jouerCoup(leCoup);
-                        System.out.println("Coup saisi !\n");
+
 
                         //pause de l'horloge du joueur avec le trait
-                        partie.joueurAvecTrait().getHorloge().finirTour();
+                        partie.joueurAvecTrait().getHorloge().finirTour();     
+                        
+                        System.out.println("Coup saisi !\n");
 
                         //affiche le temps mis par le joueur avec le trait pendant son tour
                         System.out.print("Temps mis par " + partie.joueurAvecTrait().getNom() + " : ");
                         partie.joueurAvecTrait().getHorloge().afficherTempsEnCours();
-                        System.out.println();
+                        System.out.println();                        
+
+                        partie.jouerCoup(leCoup);
+
 
                         //affichage de l'etat de la partie (echiquier, coups joues...)
                         System.out.println(partie.toString());
