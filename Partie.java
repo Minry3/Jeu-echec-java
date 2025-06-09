@@ -1,5 +1,9 @@
 import java.util.*;
 
+/**
+ * Gestion d'une Partie
+ * @author Noemie CHHUN & Clarence EDOH-DAGNON
+ */
 public class Partie {
 
     private ArrayList<String[]> coupsJoues;
@@ -9,8 +13,15 @@ public class Partie {
     private int trait;
     private Echiquier echiquier;
 
-    public Partie(Joueur leJoueur1, Joueur leJoueur2){
-
+    /**
+     * Constructeur champ a champ
+     * Initialise les coups joués, les pièces mangées, l'échiquier et les joueurs
+     * Positionne les pièces sur l'échiquier
+     * @param leJoueur1
+     * @param leJoueur2
+     */
+    public Partie(Joueur leJoueur1, Joueur leJoueur2)
+    {
         this.coupsJoues = new ArrayList<String[]>();
         this.piecesMangees = new ArrayList<Piece>();
         this.echiquier = new Echiquier();
@@ -20,58 +31,104 @@ public class Partie {
         this.trait = 1;
     }
 
-    public ArrayList<String[]> getCoupsJoues(){
+    /**
+     * Getter sur coupJoues
+     * @return la liste des coups joués
+     */
+    public ArrayList<String[]> getCoupsJoues()
+    {
         return this.coupsJoues;
     }
-    
-    public ArrayList<Piece> getPiecesMangees(){
+    // fin de la methode getCoupsJoues
+
+    /**
+     * Getter sur piecesMangees
+     * @return la liste des pièces mangées
+     */
+    public ArrayList<Piece> getPiecesMangees()
+    {
         return this.piecesMangees;
     }
+    // fin de la methode getPiecesMangees
 
-    public Joueur getJoueur1(){
+    /**
+     * Getter sur joueur_1
+     * @return le joueur 1
+     */
+    public Joueur getJoueur1()
+    {
         return this.joueur_1;
     }
+    // fin de la methode getJoueur1
 
-
-    public Joueur getJoueur2(){
+    /**
+     * Getter sur joueur_2
+     * @return le joueur 2
+     */
+    public Joueur getJoueur2()
+    {
         return this.joueur_2;
     }
+    // fin de la methode getJoueur2
 
-    public Joueur joueurAvecTrait() {
+    /**
+     * @return le joueur qui a le trait (donc le joueur qui doit jouer)
+     */
+    public Joueur joueurAvecTrait() 
+    {
         if (this.trait == 1) {
             return this.joueur_1;
         } else {
             return this.joueur_2;
         }
     }
+    // fin de la methode joueurAvecTrait
 
-    public String[] saisirCoup() throws ChaineVideException, MauvaiseLongueurException {
+    /**
+     * Permet de saisir un coup
+     * @return  un tableau de String contenant la case de la pièce et le coup proposé
+     * @throws ChaineVideException
+     * @throws MauvaiseLongueurException
+     */
+    public String[] saisirCoup() throws ChaineVideException, MauvaiseLongueurException 
+    {
+
+        // Tableau de String pour stocker la case de la pièce et le coup proposé
         String[] t = new String[2];
         Scanner sc = new Scanner(System.in);
 
+        // Demande à l'utilisateur de saisir la case de sa pièce
         System.out.println("\nVeuillez saisir la case de votre pièce : ");
 
         t[0] = sc.nextLine();
         System.out.println();
 
+        // Demande à l'utilisateur de saisir le coup proposé
         System.out.println("\nVeuillez proposer un coup : ");
         System.out.println();
 
         t[1] = sc.nextLine();
 
+        // Si la chaine est vide ou si la longueur n'est pas de 2 caractères, on lève une exception
         if(t[0].isEmpty() || t[1].isEmpty()) 
         {
             throw new ChaineVideException("La chaine ne peut pas être vide.");
         }
-
         if(t[0].length() != 2 || t[1].length() != 2) 
         {
             throw new MauvaiseLongueurException("La longueur de la chaine doit être de 2 caractères.");
         }
         return t;
     }
+    // fin de la methode saisirCoup
 
-    public boolean estEnEchec(String couleur) {
+    /**
+     * Vérifie si le roi de la couleur donnée est en échec
+     * @param couleur
+     * @return true si le roi est en échec, false sinon
+     */
+    public boolean estEnEchec(String couleur) 
+    {
         // Etape 1 : trouver le roi de la couleur donnée
         Case caseRoi = null;
         Case[][] lesCases = this.echiquier.getLesCases();
@@ -117,7 +174,15 @@ public class Partie {
     } 
     // fin de la methode estEnEchec
 
-    public boolean verifChemin(Case depart, Case destination){
+    /**
+     * Vérifie si le chemin entre la case de départ et la case de destination est libre
+     * (c'est-à-dire qu'il n'y a pas de pièces entre les deux)
+     * @param depart case de départ
+     * @param destination case de destination
+     * @return true si le chemin est libre, false sinon
+     */
+    public boolean verifChemin(Case depart, Case destination)
+    {
         // On récupère la pièce à déplacer
         Piece laPiece = depart.getPiece();  
 
@@ -161,7 +226,13 @@ public class Partie {
         // Si toutes les cases intermédiaires sont vides, alors chemin libre
         return true;
     }
+    // fin de la methode verifChemin
 
+    /**
+     * Vérifie si le coup proposé est valide
+     * @param leCoup tableau de String contenant la case de départ et la case d'arrivée
+     * @return true si le coup est valide, false sinon
+     */
     public boolean verifCoup(String[] leCoup)
     {
         String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
@@ -226,19 +297,37 @@ public class Partie {
         // Si toutes les vérifications sont passées, le coup est valide
         return true;
     }
+    // fin de la methode verifCoup
 
-    public void ajouterCoupJoue(String[] leCoup){
+    /**
+     * Ajoute un coup joue a la liste des coups joues
+     * @param leCoup tableau de String contenant la case de depart et la case d'arrivee
+     */
+    public void ajouterCoupJoue(String[] leCoup)
+    {
 
         this.coupsJoues.add(leCoup);
     }
+    // fin de la methode ajouterCoupJoue
 
-    public void ajouterPieceMangee(Piece laPiece){
+    /**
+     * Ajoute une piece mangee a la liste des pieces mangees
+     * @param laPiece la pièce mangée
+     */
+    public void ajouterPieceMangee(Piece laPiece)
+    {
 
         this.piecesMangees.add(laPiece);
     }
+    // fin de la methode ajouterPieceMangee
 
 
-    public void jouerCoup(String[] leCoup){
+    /**
+     * Permet de jouer un coup
+     * @param leCoup tableau de String contenant la case de départ et la case d'arrivée
+     */
+    public void jouerCoup(String[] leCoup)
+    {
         String etiquetteD = leCoup[0].substring(0, 1).toUpperCase();
         String etiquetteA = leCoup[1].substring(0, 1).toUpperCase();
         int numeroD = Character.getNumericValue(leCoup[0].charAt(1));
@@ -262,8 +351,15 @@ public class Partie {
         else
             this.trait = 1;
     }
+    // fin de la methode jouerCoup
 
-   public boolean mat(String couleur){
+    /**
+     * Vérifie si le joueur de la couleur donnee est en echec et mat
+     * @param couleur la couleur du joueur
+     * @return true si le joueur est en echec et mat, false sinon
+     */
+    public boolean mat(String couleur)
+    {
 
         if (!estEnEchec(couleur)) {
             return false;
@@ -315,11 +411,18 @@ public class Partie {
         }
         return true; // aucun coup possible pour éviter donc échec et mat
 
-    }// fin de la methode mat
+    }
+    // fin de la methode mat
 
-    public boolean pat(String couleur) {
+    /**
+     * Verifie si il s'agit d'une situation de pat
+     * @param couleur la couleur du joueur
+     * @return true si c'est un pat, false sinon
+     */
+    public boolean pat(String couleur) 
+    {
 
-    // Si le roi est en echec, ce n'est pas un pat 
+        // Si le roi est en echec, ce n'est pas un pat 
         if (estEnEchec(couleur)) {
             return false;
         }
@@ -376,7 +479,12 @@ public class Partie {
         // Aucun coup légal trouvé et pas en échec,donc égalité 
         return true;
     }
+    // fin de la methode pat
 
+    /**
+     * Verifie si la partie est terminee
+     * @return 0 si pat, 1 si joueur 1 gagne, 2 si joueur 2 gagne, -1 si la partie n'est pas terminee
+     */
     public int finDePartie()
     {   
         Joueur joueur;
@@ -398,7 +506,11 @@ public class Partie {
         else 
             return -1;
     }
+    // fin de la methode finDePartie
 
+    /**
+     * @return la chaine de caracteres representant l'etat de la partie
+     */
     public String toString()
     {
         String chaine = "-----------------------------\n\n";
@@ -429,4 +541,6 @@ public class Partie {
 
         return chaine;
     }
+    // fin de la methode toString
 }
+// fin de la classe Partie

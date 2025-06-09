@@ -1,7 +1,7 @@
-import java.util.*;
 
 /**
  * gestion d'un Echiquier
+ * @author Noemie CHHUN
  */
 public class Echiquier
 {
@@ -65,26 +65,15 @@ public class Echiquier
     // fin methode getCase
 
 
+    /**
+     * Getter sur lesCases
+     * @return le tableau de cases de l'echiquier
+     */
     public Case[][] getLesCases()
     {
         return this.lesCases;
     }
-
-    public ArrayList<Piece> getPiecesCouleur(String couleur) {
-        ArrayList<Piece> pieces = new ArrayList<>();
-
-        for (int i = 0; i < lesCases.length; i++) {
-            for (int j = 0; j < lesCases[i].length; j++) {
-                Piece p = lesCases[i][j].getPiece();
-                if (p != null && p.getCouleur().equals(couleur)) {
-                    pieces.add(p);
-                }
-            }
-        }
-
-        return pieces;
-    }
-
+    // fin methode getLesCases
 
     /**
      * permet de retrouver l'indice correspondant a l'etiquette voulue dans le tableau ETIQUETTES
