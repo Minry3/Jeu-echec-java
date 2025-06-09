@@ -20,20 +20,17 @@ public class Dame extends Piece {
      */
     public boolean deplacement(Case destination)
     {
-        if(destination != null){
-            int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
-            int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
-            int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
-            int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
+        int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
+        int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
+        int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
 
-            //verification si le deplacement est vertical ou en diagonale
-            boolean deplacementHorizontalOuVertical =  colonneDepart == colonneArrivee || ligneDepart == ligneArrivee;
-            boolean deplacementDiagonale = Math.abs(colonneArrivee - colonneDepart) == Math.abs(ligneArrivee - ligneDepart);
+        //verification si le deplacement est vertical ou en diagonale
+        boolean deplacementHorizontalOuVertical =  colonneDepart == colonneArrivee || ligneDepart == ligneArrivee;
+        boolean deplacementDiagonale = Math.abs(colonneArrivee - colonneDepart) == Math.abs(ligneArrivee - ligneDepart);
 
-            //le deplacement doit etre soit vertical, soit en diagonale
-            return deplacementHorizontalOuVertical || deplacementDiagonale;            
-        }
-        return false;
+        //le deplacement doit etre soit vertical, soit en diagonale
+        return deplacementHorizontalOuVertical || deplacementDiagonale;            
     }
     // fin methode deplacement
 

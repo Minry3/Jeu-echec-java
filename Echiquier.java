@@ -46,10 +46,17 @@ public class Echiquier
      * Getter sur une case du tableau Case[][]
      * @param etiquette l'etiquette de la case
      * @param numero le numero de la case
-     * @return la case correspondante
+     * @return la case correspondante ou null si elle n'existe pas
      */
     public Case getCase(String etiquette, int numero)
     {
+        // si l'etiquette n'est pas sur l'echiquier
+        if (etiquette.compareTo("A") < 0 || etiquette.compareTo("H") > 0)
+            return null;
+        // si le numero n'est pas sur l'echiquier
+        if (numero < 1 || numero > 8)
+            return null;
+
         int e = Echiquier.indiceEtiquette(etiquette);
         int n = Echiquier.indiceNumero(numero);
         Case laCase = this.lesCases[n][e];
@@ -57,6 +64,11 @@ public class Echiquier
     }
     // fin methode getCase
 
+
+    public Case[][] getLesCases()
+    {
+        return this.lesCases;
+    }
 
     public ArrayList<Piece> getPiecesCouleur(String couleur) {
         ArrayList<Piece> pieces = new ArrayList<>();
@@ -211,144 +223,5 @@ public class Echiquier
         }
     }
     // fin methode init
-
-    public boolean estEnEchec(String couleur) {
-        // Etape 1 : trouver le roi de la couleur donnée
-        Case caseRoi = null;
-
-        for (int i = 0; i < lesCases.length; i++) {
-            for (int j = 0; j < lesCases[i].length; j++) {
-                Piece piece = lesCases[i][j].getPiece();
-                if (piece != null && piece instanceof Roi && piece.getCouleur().equals(couleur)) {
-                    caseRoi = lesCases[i][j];
-                    break;
-                }
-            }
-        }
-
-        // Etape 2 : vérifier si une pièce adverse peut attaquer cette case
-        for (int i = 0; i < lesCases.length; i++) {
-            for (int j = 0; j < lesCases[i].length; j++) {
-                Piece attaquant = lesCases[i][j].getPiece();
-                if (attaquant != null && !attaquant.getCouleur().equals(couleur)) {
-                    if (attaquant.deplacement(caseRoi)) {
-                        return true; // Le roi est attaqué
-                    }
-                }
-            }
-        }
-
-        return false; // Aucune menace
-    } // fin de la methode estEnEchec
-
-    public boolean mat(String couleur){
-
-        if (!estEnEchec(couleur)) {
-            return false;
-        }
-
-        for (int i = 0; i < lesCases.length; i++) {
-            for (int j = 0; j < lesCases[i].length; j++) {
-                Piece piece = lesCases[i][j].getPiece();
-                if (piece != null && piece.getCouleur().equals(couleur)) {
-                    Case caseDepart = lesCases[i][j];
-                    for (int x = 0; x < lesCases.length; x++) {
-                        for (int y = 0; y < lesCases[x].length; y++) {
-                            Case caseArrivee = lesCases[x][y];
-
-                            // Si le joueur peut faire un coup "legal" avec la pièce en question vers la case en cours de verification
-                            if (piece.deplacement(caseArrivee)) {
-                                // Simuler le coup
-                                Piece sauvegarde = caseArrivee.getPiece();
-                                caseArrivee.setPiece(piece);
-                                caseDepart.supprimerPiece();
-                                piece.setCase(caseArrivee);
-
-                                // Variable qui serivra a verifier si après la simulation, le roi est toujours en echec
-                                boolean encoreEnEchec = estEnEchec(couleur);
-                                
-                                //On retourne à l'état avant la simulation
-                                caseDepart.setPiece(piece);
-                                caseArrivee.setPiece(sauvegarde);
-                                piece.setCase(caseDepart);
-
-                                // Si le roi n'est plus en echec
-                                if (!encoreEnEchec) {
-                                    return false; // au moins un coup sauve du mat
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return true; // aucun coup possible pour éviter donc échec et mat
-
-    }// fin de la methode mat
-
-
-
-    public boolean pat(String couleur) {
-
-    // Si le roi est en echec, ce n'est pas un pat 
-        if (estEnEchec(couleur)) {
-            return false;
-        }
-
-        // On parcourt toutes les cases
-        for (int i = 0; i < lesCases.length; i++) {
-            for (int j = 0; j < lesCases[i].length; j++) {
-                Case caseDepart = lesCases[i][j];
-                Piece piece = caseDepart.getPiece();
-
-                // Si la case contient une pièce de la bonne couleur
-                if (piece != null && piece.getCouleur().equals(couleur)) {
-
-                    // On parcourt toutes les cases possibles comme destinations
-                    for (int x = 0; x < lesCases.length; x++) {
-                        for (int y = 0; y < lesCases[x].length; y++) {
-                            Case caseDestination = lesCases[x][y];
-
-                            if (piece.deplacement(caseDestination)) {
-                                // Sauvegarde de l’état initial
-                                Case ancienneCase = piece.getCase();
-                                Piece pieceCapturee = caseDestination.getPiece();
-
-                                // Simulation du coup
-                                ancienneCase.supprimerPiece();
-                                caseDestination.setPiece(piece);
-                                piece.setCase(caseDestination);
-
-                                boolean encoreEnEchec = estEnEchec(couleur);
-
-                                // Annuler le coup simulé
-                                caseDestination.supprimerPiece();
-                                ancienneCase.setPiece(piece);
-                                piece.setCase(ancienneCase);
-
-                                if (pieceCapturee != null) {
-                                    caseDestination.setPiece(pieceCapturee);
-                                    pieceCapturee.setCase(caseDestination);
-                                }
-
-                                // Si le coup sort d’un blocage, alors pas pat
-                                if (!encoreEnEchec) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Aucun coup légal trouvé et pas en échec,donc égalité 
-        return true;
-    }
-
-
-
-
 }
 // fin classe Echiquier
