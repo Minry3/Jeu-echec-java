@@ -49,12 +49,12 @@ public class Partie {
         String[] t = new String[2];
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Veuillez saisir la case de votre pièce : ");
+        System.out.println("\nVeuillez saisir la case de votre pièce : ");
 
         t[0] = sc.nextLine();
         System.out.println();
 
-        System.out.println("Veuillez proposer un coup : ");
+        System.out.println("\nVeuillez proposer un coup : ");
         System.out.println();
 
         t[1] = sc.nextLine();

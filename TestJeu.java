@@ -109,11 +109,18 @@ public class TestJeu{
                 System.out.println("!! Commençons !!");
                 //affichage de l'etat de la partie (echiquier, coups joues...)
                 System.out.println(partie.toString());
+                //afichage du temps mis par les joueurs
+                System.out.println("Temps toal " + joueur_1.getNom() + " : " + joueur_1.getHorloge().toString());
+                System.out.println("Temps mis par " + joueur_2.getNom() + " : " + joueur_2.getHorloge().toString());
 
+                //tant que la partie n'est pas finie
                 while(partie.finDePartie() == -1)
                 {
                     try
                     {
+                        // demarre l'horloge du joueur avec le trait
+                        partie.joueurAvecTrait().getHorloge().demarrerTour();
+
                         //saisie du coup
                         String[] leCoup = partie.saisirCoup();
                         System.out.println();
@@ -129,11 +136,25 @@ public class TestJeu{
                         partie.jouerCoup(leCoup);
                         System.out.println("Coup saisi !\n");
 
+                        //pause de l'horloge du joueur avec le trait
+                        partie.joueurAvecTrait().getHorloge().finirTour();
+
+                        //affiche le temps mis par le joueur avec le trait pendant son tour
+                        System.out.print("Temps mis par " + partie.joueurAvecTrait().getNom() + " : ");
+                        partie.joueurAvecTrait().getHorloge().afficherTempsEnCours();
+                        System.out.println();
+
                         //affichage de l'etat de la partie (echiquier, coups joues...)
                         System.out.println(partie.toString());
 
-                        //affiche si le joueur avec le trait est en echec
+                        //afichage du temps total mis par les joueurs
+                        System.out.println("\nTemps total de " + joueur_1.getNom() + " : " + joueur_1.getHorloge().toString());
+                        System.out.println("Temps total de " + joueur_2.getNom() + " : " + joueur_2.getHorloge().toString() + "\n");
+
+                        //couleur du joueur avec le trait
                         String couleurTrait = partie.joueurAvecTrait().getCouleur();
+                        
+                        //affiche si le joueur avec le trait est en echec
                         if(couleurTrait.equals("blanc") && partie.estEnEchec(couleurTrait))
                             System.out.println(joueur_1.getNom() + "est en échec !\n");
                         else if(couleurTrait.equals("noir") && partie.estEnEchec(couleurTrait))

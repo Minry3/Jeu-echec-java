@@ -6,6 +6,7 @@ public class Joueur
 {
     private String nom;
     private String couleur;
+    private Horloge horloge;
 
     /**
      * constructeur champ a champ
@@ -15,6 +16,7 @@ public class Joueur
     public Joueur(String unNom, String uneCouleur){
         this.nom = unNom;
         this.couleur = uneCouleur;
+        this.horloge = new Horloge();
     }
 
     /**
@@ -34,6 +36,16 @@ public class Joueur
         return this.couleur;
     }
     // fin methode getCouleur
+
+    /**
+     * Getter sur horloge
+     * @return l'horloge du joueur
+     */
+    public Horloge getHorloge()
+    {
+        return this.horloge;
+    }
+    // fin methode getHorloge
     
     /**
      * Setter sur nom

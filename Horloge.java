@@ -67,7 +67,18 @@ public class Horloge {
         return System.currentTimeMillis() - this.debutTour;
     } // fin méthode getTempsEnCours
  
+    /**
+     * affiche la chaine de caractères representant le temps du tour passé
+     */
+    public void afficherTempsEnCours() {
 
+        long secondes = this.getTempsEnCours() / 1000;
+        long minutes = secondes / 60;
+        secondes = secondes % 60;
+
+        System.out.printf("%02d:%02d\n", minutes, secondes);
+    } 
+    // fin méthode afficherTempsEnCours 
     
     /**
      * @return la chaine de caractères representant l'étatde l'horloge
