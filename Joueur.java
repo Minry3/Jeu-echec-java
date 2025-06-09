@@ -56,5 +56,13 @@ public class Joueur
     }
     // fin methode setNom
     
+    /**
+     * @return la chaine de caracteres representant le joueur
+     */
+    public String toString()
+    {
+        return "Joueur: " + this.nom + " (" + this.couleur + ") - Temps total: " + this.horloge.toString();
+    }
+    // fin methode toString
 }
 // fin classe Joueur
