@@ -5,41 +5,81 @@
 
 public class Horloge {
 
-    private Joueur joueur;         //Joueur associe a l'horloge
-
     private long tempsTotal;       // en millisecondes
-    private long debutTour;        // timestamp quand le tour commence
-    private boolean enCours;       // est-ce que le joueur possede le trait ?*
+    private long debutTour;        // horodatage du début du tour, en millisecondes
+    private boolean enCours;       // est-ce que le joueur possede le trait ?
     
-    
+
+
+
+
+    /**
+     * constructeur par défaut
+     * initialise le temps total à 0
+     */
     public Horloge() {
+
         this.tempsTotal = 0;
         this.enCours = false;
-    }
+    } // fin constructeur
 
+
+    /**
+     * Démarre le chronomètre au début du tour
+     */
     public void demarrerTour() {
+
         this.debutTour = System.currentTimeMillis();
         this.enCours = true;
-    }
+    } // fin méthode demarrerTour
 
+
+
+    /**
+     * Arrête le chronomètre à la fin du tour
+     */    
     public void finirTour() {
-        if (enCours) {
-            long tempsTour = System.currentTimeMillis() - debutTour;
+
+        // si un tour avait déja commencé
+        if (this.enCours) { 
+            long tempsTour = getTempsEnCours();
             this.tempsTotal += tempsTour;
             this.enCours = false;
         }
-    }
+    } // fin méthode finirTour
 
+
+
+    /**
+     * @return le temps total de reflexion du joueur
+     */
     public long getTempsTotal() {
-        if (enCours) {
-            return tempsTotal + (System.currentTimeMillis() - debutTour);
-        }
-        return tempsTotal;
-    }
 
+        return tempsTotal;
+    } // fin méthode getTempsTotal
+
+
+    /**
+     * @return le temps de reflexion du joueur pendant son tour
+     */
     public long getTempsEnCours() {
-        if (!enCours) return 0;
-        return System.currentTimeMillis() - debutTour;
+
+        return System.currentTimeMillis() - this.debutTour;
+    } // fin méthode getTempsEnCours
+ 
+
+    
+    /**
+     * @return la chaine de caractères representant l'étatde l'horloge
+     * Temps total de reflexion du joueur durant la partie
+     */
+    public String toString() {
+
+        long secondes = this.getTempsTotal() / 1000;
+        long minutes = secondes / 60;
+        secondes = secondes % 60;
+
+        return String.format("%02d:%02d", minutes, secondes);
     }
 
 }
