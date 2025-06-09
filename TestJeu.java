@@ -35,14 +35,14 @@ public class TestJeu{
                     //si le choix n'est pas le bon, on retourne une exception
                     if (leChoix != 1 && leChoix != 2) 
                     {
-                        throw (new MauvaisChoixException("Erreur : entrez 1 ou 2 uniquement.\n"));
+                        throw (new MauvaisChoixException("\nErreur : entrez 1 ou 2 uniquement.\n"));
                     }
 
                     choix = leChoix;
                 }
                 catch(InputMismatchException | MauvaisChoixException e) //recupere les exceptions en cas de saisie d'un autre type qu'un int, ou d'une valeur differente de 1 ou 2
                 {
-                    System.out.println("Attention !\nEntrez la valeur 1 ou 2 selon votre choix.\n");
+                    System.out.println("\nAttention !\nEntrez la valeur 1 ou 2 selon votre choix.\n");
                     sc.nextLine(); //vide l'entree du scanner pour eviter une boucle infinie
                 }
                 

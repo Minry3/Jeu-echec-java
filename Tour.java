@@ -20,17 +20,13 @@ public class Tour extends Piece
      */
     public boolean deplacement(Case destination)
     {
-        if(destination != null){
-            int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
-            int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
-            int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
-            int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
-            
-            // le deplacement doit etre horizontal ou vertical
-            return (ligneDepart == ligneArrivee || colonneDepart == colonneArrivee);            
-        }
-        return false;
-
+        int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
+        int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
+        int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
+        int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        
+        // le deplacement doit etre horizontal ou vertical
+        return (ligneDepart == ligneArrivee || colonneDepart == colonneArrivee);            
     }
     // fin methode deplacement
 

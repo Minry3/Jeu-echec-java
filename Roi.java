@@ -20,21 +20,15 @@ public class Roi extends Piece
      */
     public boolean deplacement(Case destination)
     {
-        if(destination != null){
-            int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
-            int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
-            int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
-            int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
-            
-            // le deplacement doit etre de seulement une case, quelque soit la direction
-            return (Math.abs(ligneDepart - ligneArrivee) <= 1) && (Math.abs(colonneDepart - colonneArrivee) <= 1);            
-        }
-        return false;
-
+        int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
+        int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
+        int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
+        int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        
+        // le deplacement doit etre de seulement une case, quelque soit la direction
+        return (Math.abs(ligneDepart - ligneArrivee) <= 1) && (Math.abs(colonneDepart - colonneArrivee) <= 1);            
     }
     // fin methode deplacement
-
-
 
     /**
      * @return la chaine de caracteres representant le roi selon sa couleur

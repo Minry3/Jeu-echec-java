@@ -50,10 +50,58 @@ public class Partie {
         System.out.println();
 
         t[1] = sc.nextLine();
-        
-        return t;
 
+        return t;
     }
+
+    public boolean estEnEchec(String couleur) {
+        // Etape 1 : trouver le roi de la couleur donnée
+        Case caseRoi = null;
+
+        int i = 0;
+        boolean trouve = false;
+        while(i<this.echiquier.getLesCases().length && !trouve)
+        {
+            int j = 0;
+            while(j<this.echiquier.getLesCases()[i].length && !trouve)
+            {
+                Piece piece = this.echiquier.getLesCases()[i][j].getPiece();
+                if(piece != null && piece instanceof Roi && piece.getCouleur().equals(couleur))
+                {
+                    caseRoi = this.echiquier.getLesCases()[i][j];
+                    trouve = true;
+                }
+                j++;
+            }
+            i++;
+        }
+        
+        // s'il n'y a pas de case roi trouvee
+        if(!trouve)
+            return false;
+
+        // Etape 2 : vérifier si une pièce adverse peut attaquer cette case
+        boolean enEchec = false;
+        i = 0;
+
+        while (i < this.echiquier.getLesCases().length && !enEchec) {
+            int j = 0;
+            while (j < this.echiquier.getLesCases()[i].length && !enEchec) {
+                Piece attaquant = this.echiquier.getLesCases()[i][j].getPiece();
+                // s'il y a une piece sur la case et que la couleur est celle de l'adversaire
+                if (attaquant != null && !attaquant.getCouleur().equals(couleur)) {
+                    // si le deplacement est faisable
+                    if (attaquant.deplacement(caseRoi) && verifChemin(this.echiquier.getLesCases()[i][j], caseRoi)) {
+                        enEchec = true; // Le roi est attaqué
+                    }
+                }
+                j++;
+            }
+            i++;
+        }
+        return enEchec;
+    } 
+    // fin de la methode estEnEchec
 
     public boolean verifChemin(Case depart, Case destination){
         // On récupère la pièce à déplacer
@@ -110,14 +158,18 @@ public class Partie {
         Case caseDepart = this.echiquier.getCase(etiquetteD, numeroD);
         Case caseArrivee = this.echiquier.getCase(etiquetteA, numeroA);
 
+        // si les cases ne sont pas sur l'echiquier
         if (caseDepart == null || caseArrivee == null)
             return false;
 
+        // si la case de depart ne contient pas de piece
         if (caseDepart.getPiece() == null)
             return false;
 
-        String couleurJoueurActuel = (this.trait == 1) ? this.joueur_1.getCouleur() : this.joueur_2.getCouleur();
-        if (!caseDepart.getPiece().getCouleur().equals(couleurJoueurActuel))
+        // si la piece de la case de depart n'est pas de la meme couleur que celle du joueur ayant le trait
+        if(this.trait == 1 && !caseDepart.getPiece().getCouleur().equals(this.joueur_1.getCouleur()))
+            return false;
+        else if(this.trait == 2 && !caseDepart.getPiece().getCouleur().equals(this.joueur_2.getCouleur()))
             return false;
 
         Piece laPiece = caseDepart.getPiece();
@@ -126,14 +178,35 @@ public class Partie {
         if (caseArrivee.getPiece() != null && caseArrivee.getPiece().getCouleur().equals(laPiece.getCouleur()))
             return false;
 
+        // si le deplacement de la piece n'est pas possible
         if (!laPiece.deplacement(caseArrivee))
             return false;
 
+        // si il y a une piece situee entre la case de depart et la case d'arrivee
         if (!this.verifChemin(caseDepart, caseArrivee))
             return false;
 
-        // à ce stade, le coup est potentiellement valide
-        return true;
+        // Simulation du coup
+        Piece pieceMangee = caseArrivee.getPiece();
+        if(pieceMangee != null)
+            caseArrivee.supprimerPiece();
+        caseArrivee.setPiece(laPiece);
+        caseDepart.supprimerPiece();
+        laPiece.setCase(caseArrivee);
+
+        // Variable qui serivra a verifier si après la simulation, le roi est en echec
+        boolean roiEnEchec = this.estEnEchec(laPiece.getCouleur());
+
+        // Annuler la simulation
+        caseDepart.setPiece(laPiece);
+        laPiece.setCase(caseDepart);
+        if (pieceMangee != null) {
+            pieceMangee.setCase(caseArrivee);
+        }
+        caseArrivee.setPiece(pieceMangee);
+        
+        // si le roi est en echec return false, sinon le coup est valide donc true
+        return !roiEnEchec;
     }
 
     public void ajouterCoupJoue(String[] leCoup){
@@ -172,7 +245,123 @@ public class Partie {
             this.trait = 1;
     }
 
-  
+   public boolean mat(String couleur){
+
+        if (!estEnEchec(couleur)) {
+            return false;
+        }
+
+        Case[][] lesCases = this.echiquier.getLesCases();
+
+        for (int i = 0; i < lesCases.length; i++) {
+            for (int j = 0; j < lesCases[i].length; j++) {
+                Piece piece = lesCases[i][j].getPiece();
+                if (piece != null && piece.getCouleur().equals(couleur)) {
+                    Case caseDepart = lesCases[i][j];
+                    for (int x = 0; x < lesCases.length; x++) {
+                        for (int y = 0; y < lesCases[x].length; y++) {
+                            Case caseArrivee = lesCases[x][y];
+
+                            String[] leCoup = {caseDepart.getEtiquette() + caseDepart.getNumero(), caseArrivee.getEtiquette() + caseArrivee.getNumero()};
+
+                            // Si le joueur peut faire un coup "legal" avec la pièce en question vers la case en cours de verification
+                            if (this.verifCoup(leCoup)) {
+                                // Simuler le coup
+                                // Simulation du coup
+                                Piece pieceMangee = caseArrivee.getPiece();
+                                caseArrivee.supprimerPiece();
+                                caseArrivee.setPiece(piece);
+                                caseDepart.supprimerPiece();
+                                piece.setCase(caseArrivee);
+                                
+                                // Variable qui serivra a verifier si après la simulation, le roi est toujours en echec
+                                boolean encoreEnEchec = estEnEchec(couleur);
+                                
+                                //On retourne à l'état avant la simulation
+                                caseDepart.setPiece(piece);
+                                piece.setCase(caseDepart);
+                                if (pieceMangee != null) {
+                                    pieceMangee.setCase(caseArrivee);
+                                }
+                                caseArrivee.setPiece(pieceMangee);
+
+                                // Si le roi n'est plus en echec
+                                if (!encoreEnEchec) {
+                                    return false; // au moins un coup sauve du mat
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true; // aucun coup possible pour éviter donc échec et mat
+
+    }// fin de la methode mat
+
+    public boolean pat(String couleur) {
+
+    // Si le roi est en echec, ce n'est pas un pat 
+        if (estEnEchec(couleur)) {
+            return false;
+        }
+
+        Case[][] lesCases = this.echiquier.getLesCases();
+
+        // On parcourt toutes les cases
+        for (int i = 0; i < lesCases.length; i++) {
+            for (int j = 0; j < lesCases[i].length; j++) {
+                Case caseDepart = lesCases[i][j];
+                Piece piece = caseDepart.getPiece();
+
+                // Si la case contient une pièce de la bonne couleur
+                if (piece != null && piece.getCouleur().equals(couleur)) {
+
+                    // On parcourt toutes les cases possibles comme destinations
+                    for (int x = 0; x < lesCases.length; x++) {
+                        for (int y = 0; y < lesCases[x].length; y++) {
+                            Case caseDestination = lesCases[x][y];
+
+                            if (piece.deplacement(caseDestination)) {
+                                // Sauvegarde de l’état initial
+                                Case ancienneCase = piece.getCase();
+                                Piece pieceCapturee = caseDestination.getPiece();
+
+                                // Simulation du coup
+                                ancienneCase.supprimerPiece();
+                                caseDestination.setPiece(piece);
+                                piece.setCase(caseDestination);
+
+                                boolean encoreEnEchec = estEnEchec(couleur);
+
+                                // Annuler le coup simulé
+                                caseDestination.supprimerPiece();
+                                ancienneCase.setPiece(piece);
+                                piece.setCase(ancienneCase);
+
+                                if (pieceCapturee != null) {
+                                    caseDestination.setPiece(pieceCapturee);
+                                    pieceCapturee.setCase(caseDestination);
+                                }
+
+                                // Si le coup sort d’un blocage, alors pas pat
+                                if (!encoreEnEchec) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Aucun coup légal trouvé et pas en échec,donc égalité 
+        return true;
+    }
+
+
+
+
 
     public int finDePartie()
     {   
@@ -188,9 +377,9 @@ public class Partie {
             numAdversaire = 1;            
         }
 
-        if(this.echiquier.pat(joueur.getCouleur()))
+        if(this.pat(joueur.getCouleur()))
             return 0;
-        else if(this.echiquier.mat(joueur.getCouleur()))
+        else if(this.mat(joueur.getCouleur()))
             return numAdversaire;
         else 
             return -1;

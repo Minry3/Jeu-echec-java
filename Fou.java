@@ -20,17 +20,13 @@ public class Fou extends Piece
      */
     public boolean deplacement(Case destination)
     {
-        if(destination != null){
-            int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
-            int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
-            int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
-            int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
-            
-            //le deplacement doit etre en diagonale
-            return (Math.abs(ligneDepart - ligneArrivee) == Math.abs(colonneDepart - colonneArrivee));
-        }
-
-        return false;
+        int colonneDepart = Echiquier.indiceEtiquette(this.getCase().getEtiquette());
+        int colonneArrivee = Echiquier.indiceEtiquette(destination.getEtiquette());
+        int ligneDepart = Echiquier.indiceNumero(this.getCase().getNumero());
+        int ligneArrivee = Echiquier.indiceNumero(destination.getNumero());
+        
+        //le deplacement doit etre en diagonale
+        return (Math.abs(ligneDepart - ligneArrivee) == Math.abs(colonneDepart - colonneArrivee));
     }
     // fin methode deplacement
 
